@@ -1,0 +1,32 @@
+{
+  "name": "log_in",
+  "version": "1.0.0",
+  "description": "Desafío coderhouse: Login por formulario",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agustinyuse/log_in.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/agustinyuse/log_in/issues"
+  },
+  "homepage": "https://github.com/agustinyuse/log_in#readme",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "socket.io": "^4.1.2",
+    "mongoose": "^5.13.2",
+    "cookie-parser": "^1.4.5",
+    "express-session": "^1.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.9"
+  }
+}

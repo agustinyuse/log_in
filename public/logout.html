@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+      integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+      crossorigin="anonymous"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.js"></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container mt-5">
+      <div id="exit"></div>
+    </div>
+
+    <script>
+      const EXIT_MESSAGE = `<div class="alert alert-primary" role="alert">
+                               <h3> Hasta luego {{username}} </h3>
+                            </div>`;
+
+      fetch("/getUserName", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((respuesta) => respuesta.json())
+        .then((username) => {
+          const template = Handlebars.compile(EXIT_MESSAGE);
+          document.getElementById("exit").innerHTML = template({
+            username: username,
+          });
+
+          setTimeout(function () {
+            window.location.href = "/login";
+          }, 3000);
+        });
+    </script>
+  </body>
+</html>
