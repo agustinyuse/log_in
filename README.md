@@ -1,6 +1,6 @@
-# log_in
+# log_in con mongo atlas
 
-Desafío coderhouse: Login por formulario
+Desafío coderhouse: Login por formulario y persistencia en mongo atlas.
 
 ### Resúmen
 
@@ -8,7 +8,17 @@ Continuando con el desafío de los trabajos anteriores, este desafío consta de 
 
 En la config podes indicar el nombre de usuario para hacer pruebas.
 
-### Para correr el proyecto
+### V2
+
+Agregué Mongo Atlas para persistir la sesión.
+
+## Inicializar proyecto
+
+```
+npm i
+```
+
+## Para correr el proyecto
 
 ```
 node server

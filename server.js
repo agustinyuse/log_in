@@ -2,25 +2,30 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 
+const config = require("./config/config.json");
+const dotenv = require("dotenv");
+
+const MongoStore = require("connect-mongo");
+const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true };
+
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(
   session({
+    store: MongoStore.create({
+      mongoUrl: config.MONGO_ATLAS,
+      mongoOptions: advancedOptions,
+    }),
     secret: "secreto",
     resave: false,
     saveUninitialized: false,
     cookie: {
-      expires: 60000,
+      expires: config.COOKIE_EXPIRES,
     },
   })
 );
-
-const config = require("./config/config.json");
-const dotenv = require("dotenv");
-
-require("./database/connection");
 
 dotenv.config();
 
