@@ -1,36 +1,9 @@
 const express = require("express");
-const cookieParser = require("cookie-parser");
-const session = require("express-session");
-
-const config = require("../config/config.json");
 
 const router = express.Router();
 const controller = require("../api/product");
 
-router.use(cookieParser());
-router.use(
-  session({
-    secret: "secreto",
-    resave: false,
-    saveUninitialized: false,
-  })
-);
-
-const auth = (req, res, next) => {
-  if (
-    req.session &&
-    req.session.username == config.admin &&
-    req.session.admin
-  ) {
-    return next();
-  } else {
-    res.redirect("/login");
-  }
-};
-
-router.get("/vista", auth, (req, res) => {
-  res.redirect("/views/productos/vista");
-});
+router.get("/vista");
 
 router.post("/guardar", async (req, res) => {
   try {

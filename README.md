@@ -8,9 +8,13 @@ Continuando con el desafío de los trabajos anteriores, este desafío consta de 
 
 En la config podes indicar el nombre de usuario para hacer pruebas.
 
-### V2
+### V2 Mongo Atlas
 
-Agregué Mongo Atlas para persistir la sesión.
+Mongo Atlas para persistir la sesión.
+
+### V3 Passport lib
+
+Librería Passport para autorización y autenticación
 
 ## Inicializar proyecto
 

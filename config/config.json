@@ -1,5 +1,0 @@
-{
-  "MONGO_ATLAS": "mongodb+srv://root:root@cluster0.8q2po.mongodb.net/sessions?retryWrites=true&w=majority",
-  "COOKIE_EXPIRES": 600000,
-  "username": "admin"
-}
