@@ -6,8 +6,6 @@ Desafío coderhouse: Login por formulario y persistencia en mongo atlas.
 
 Continuando con el desafío de los trabajos anteriores, este desafío consta de entregar un mecanismo sencillo que permita loguear un cliente por su nombre, mediante un formulario de ingreso.
 
-En la config podes indicar el nombre de usuario para hacer pruebas.
-
 ### V2 Mongo Atlas
 
 Mongo Atlas para persistir la sesión.
