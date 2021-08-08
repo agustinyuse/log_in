@@ -1,6 +1,6 @@
 # log_in con passport y mongo
 
-Desafío coderhouse: Login y registro por formulario usando passport y persistiendo en mongo.
+Desafío coderhouse: Login y registro por formulario y facebook usando passport y persistiendo en mongo.
 
 ### Resúmen
 

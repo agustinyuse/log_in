@@ -23,16 +23,16 @@
                                <h3> Hasta luego {{username}} </h3>
                             </div>`;
 
-      fetch("/getUserName", {
+      fetch("/getUser", {
         headers: {
           "Content-Type": "application/json",
         },
       })
         .then((respuesta) => respuesta.json())
-        .then((username) => {
+        .then((user) => {
           const template = Handlebars.compile(EXIT_MESSAGE);
           document.getElementById("exit").innerHTML = template({
-            username: username,
+            username: user.username,
           });
 
           setTimeout(function () {

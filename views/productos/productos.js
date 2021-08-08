@@ -13,22 +13,34 @@ const MESSAGES_TEMPLATE = `{{#each messages}}
 {{/each}}
 `;
 
-const WELCOME_ALERT = `
-<div class="alert alert-success" role="alert">
-  Bienvenido {{username}}
+const PROFILE = `
+<div class="profile d-flex">
+<img
+  style="width: 100px; margin-right: 10px"
+  src="{{user.photo}}"
+  alt="Imagen del usuario"
+  alt="Imágen del usuario"
+/>
+
+<div class="data">
+  <p>{{user.username}}</p>
+  {{#if user.email}}
+  <p>{{user.email}}</p>
+  {{/if}}
+</div>
 </div>
 `;
 
-fetch("/getUserName", {
+fetch("/getUser", {
   headers: {
     "Content-Type": "application/json",
   },
 })
   .then((respuesta) => respuesta.json())
-  .then((username) => {
-    const template = Handlebars.compile(WELCOME_ALERT);
-    document.getElementById("welcome").innerHTML = template({
-      username: username,
+  .then((user) => {
+    const template = Handlebars.compile(PROFILE);
+    document.getElementById("profile").innerHTML = template({
+      user: user,
     });
   });
 
@@ -48,8 +60,7 @@ fetch("/mensajes/leer", {
     });
 
     console.log(document.getElementById("messagesContainer").innerHTML);
-  })
-  .catch((error) => console.error(error));
+  });
 
 const socket = io.connect();
 

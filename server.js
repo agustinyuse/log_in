@@ -5,9 +5,12 @@ const User = require("./models/user");
 
 const passport = require("passport");
 const bcrypt = require("bCrypt");
+const FacebookStrategy = require("passport-facebook").Strategy;
 const LocalStrategy = require("passport-local").Strategy;
 
 const dotenv = require("dotenv");
+
+dotenv.config();
 
 const controllersdb = require("./controllersdb");
 
@@ -26,10 +29,55 @@ app.use(
   })
 );
 
+const FACEBOOK_CLIENT_ID = process.env.FACEBOOK_CLIENT_ID;
+const FACEBOOK_CLIENT_SECRET = process.env.FACEBOOK_CLIENT_SECRET;
+
+passport.use(
+  new FacebookStrategy(
+    {
+      clientID: FACEBOOK_CLIENT_ID,
+      clientSecret: FACEBOOK_CLIENT_SECRET,
+      callbackURL: "/auth/facebook/callback",
+      profileFields: ["id", "displayName", "photos", "emails"],
+      scope: ["email"],
+    },
+    function (accessToken, refreshToken, profile, done) {
+      // check in mongo if a user with username exists or not
+      User.findOne({ facebook_id: profile.id }, function (err, user) {
+        //See if a User already exists with the Facebook ID
+        if (err) {
+          console.log(err); // handle errors!
+        }
+
+        if (user) {
+          done(null, user); //If User already exists login as stated on line 10 return User
+        } else {
+          //else create a new User
+
+          var newUser = new User();
+          // set the user's local credentials
+          newUser.username = profile.displayName;
+          newUser.facebook_id = profile.id;
+          newUser.email = profile.emails[0].value;
+          newUser.photo = profile.photos[0].value;
+
+          // save the user
+          newUser.save(function (err) {
+            if (err) {
+              console.log("Error in Saving user: " + err);
+              throw err;
+            }
+            console.log("User Registration succesful");
+            return done(null, newUser);
+          });
+        }
+      });
+    }
+  )
+);
+
 app.use(passport.initialize());
 app.use(passport.session());
-
-dotenv.config();
 
 const http = require("http").Server(app);
 var io = require("socket.io")(http);
@@ -187,6 +235,14 @@ app.post(
     successRedirect: "/views/productos/vista",
   })
 );
+app.post("/auth/facebook", passport.authenticate("facebook"));
+app.get(
+  "/auth/facebook/callback",
+  passport.authenticate("facebook", {
+    failureRedirect: "/faillogin",
+    successRedirect: "/views/productos/vista",
+  })
+);
 app.get("/faillogin");
 
 app.get("/signup");
@@ -199,10 +255,20 @@ app.post(
 );
 app.get("/failsignup");
 
-app.get("/getUserName", async (req, res) => {
-  const user = await User.findById(req.user.id);
+app.get("/getUser", async (req, res) => {
+  const userDB = await User.findById(req.user.id);
 
-  res.json(user.username);
+  if (!userDB.photo) {
+    userDB.photo = "/assets/default_pic.png";
+  }
+
+  const user = {
+    username: userDB.username,
+    photo: userDB.photo,
+    email: userDB.email,
+  };
+
+  res.json(user);
 });
 
 app.get("/logoutview");
@@ -216,10 +282,10 @@ app.get("/logout", (req, res) => {
 });
 
 const productsRouter = require("./routes/products.routes");
-app.use("productos", productsRouter, checkAuthentication);
+app.use("productos", productsRouter);
 
 const messagesRouter = require("./routes/messages.routes");
-app.use("mensajes", messagesRouter, checkAuthentication);
+app.use("mensajes", messagesRouter);
 
 io.on("connect", (socket) => {
   console.log("usuario conectado");
@@ -231,7 +297,7 @@ controllersdb.conectarDB(process.env.MONGO_ATLAS, (err) => {
   if (err) return console.log("error en conexión de base de datos", err);
   console.log("BASE DE DATOS CONECTADA");
 
-  app.listen(PORT, function (err) {
+  http.listen(PORT, function (err) {
     if (err) return console.log("error en listen server", err);
     console.log(`Server running on port ${PORT}`);
   });
