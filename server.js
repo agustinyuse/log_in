@@ -91,9 +91,6 @@ var options = {
   index: false,
   maxAge: "",
   redirect: false,
-  setHeaders: function (res, path, stat) {
-    res.set("x-timestamp", Date.now());
-  },
 };
 
 function checkAuthentication(req, res, next) {
@@ -282,10 +279,10 @@ app.get("/logout", (req, res) => {
 });
 
 const productsRouter = require("./routes/products.routes");
-app.use("productos", productsRouter);
+app.use("/api/productos", productsRouter);
 
 const messagesRouter = require("./routes/messages.routes");
-app.use("mensajes", messagesRouter);
+app.use("/api/mensajes", messagesRouter);
 
 io.on("connect", (socket) => {
   console.log("usuario conectado");

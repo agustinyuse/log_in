@@ -44,7 +44,7 @@ fetch("/getUser", {
     });
   });
 
-fetch("/mensajes/leer", {
+fetch("/api/mensajes/leer", {
   headers: {
     "Content-Type": "application/json",
   },
@@ -78,7 +78,7 @@ document
       thumbnail: document.getElementById("thumbnail").value,
     };
 
-    fetch("/productos/guardar", {
+    fetch("/api/productos/guardar", {
       headers: {
         "Content-Type": "application/json",
       },
@@ -119,7 +119,7 @@ document
       message: document.getElementById("txtMessage").value,
     };
 
-    fetch("/mensajes/guardar", {
+    fetch("/api/mensajes/guardar", {
       headers: {
         "Content-Type": "application/json",
       },
